@@ -1,0 +1,139 @@
+﻿<UserControl x:Class="PasteToFile.MVVM.View.HowToUseView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewModel="clr-namespace:PasteToFile.MVVM.ViewModel"
+             xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:core="clr-namespace:PasteToFile.Core"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
+             mc:Ignorable="d"
+             d:DesignHeight="640" d:DesignWidth="810"
+             d:DataContext="{d:DesignInstance Type=viewModel:ClipboardViewModel}">
+    <UserControl.Resources>
+        <!-- Import the external styles -->
+        <ResourceDictionary>
+            <!-- Keep existing converters -->
+            <core:PageComparisonConverter x:Key="PageComparisonConverter"/>
+            <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <!--<i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>-->
+
+    <!-- Main container with dark theme border -->
+    <Border Style="{StaticResource MainContainerStyle}">
+        <ScrollViewer Style="{StaticResource DarkScrollViewerStyle}">
+            <StackPanel>
+                <!-- Header Section -->
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
+                    <Icon:PackIconMaterial Kind="HelpCircle" 
+                                          Style="{StaticResource HeaderIconStyle}"
+                                          Foreground="{StaticResource AccentBrush}"
+                                          VerticalAlignment="Center"/>
+                    <TextBlock Text="How to Use PasteToFile" 
+                               Style="{StaticResource MainTitleStyle}"/>
+                </StackPanel>
+
+                <!-- Introduction -->
+                <!--<TextBlock Text=""
+                           Style="{StaticResource IntroTextStyle}"/>-->
+
+                <!-- Tip 1: Copy Content -->
+                <Border x:Name="ParentBorder"  Style="{StaticResource TipContainerStyle}">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <Grid Style="{StaticResource StepNumberGridStyle}">
+                                <Ellipse Style="{StaticResource StepNumberStyle}"/>
+                                <TextBlock Text="1" Style="{StaticResource StepNumberTextStyle}"/>
+                            </Grid>
+                            <StackPanel>
+                                <TextBlock Text="Save folder" Style="{StaticResource TipTitleStyle}"/>
+                                <TextBlock Style="{StaticResource TipDescriptionStyle}" Width="644">
+                                    By default, files are saved to the "ClipboardHistory" folder in the same directory.
+                                </TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+
+                        
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource TipContainerStyle}">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                            <Grid Style="{StaticResource StepNumberGridStyle}">
+                                <Ellipse Style="{StaticResource StepNumberStyle}"/>
+                                <TextBlock Text="2" Style="{StaticResource StepNumberTextStyle}"/>
+                            </Grid>
+                            <StackPanel>
+                                <TextBlock Text="Save clipboard content to file" Style="{StaticResource TipTitleStyle}"/>
+                                <Border Style="{StaticResource ExampleContainerStyle}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Icon:PackIconMaterial Kind="FileCheck" 
+                              Style="{StaticResource ExampleIconStyle}"
+                              Foreground="{StaticResource MutedTextBrush}"/>
+                                        <TextBlock Text="Ctrl + Shift + V" 
+                   Style="{StaticResource ExampleTextStyle}"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </StackPanel>
+
+                        
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource TipContainerStyle}">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                            <Grid Style="{StaticResource StepNumberGridStyle}">
+                                <Ellipse Style="{StaticResource StepNumberStyle}"/>
+                                <TextBlock Text="3" Style="{StaticResource StepNumberTextStyle}"/>
+                            </Grid>
+                            <StackPanel>
+                                <TextBlock Text="Save screenshot to file" Style="{StaticResource TipTitleStyle}"/>
+                                <Border Style="{StaticResource ExampleContainerStyle}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Icon:PackIconMaterial Kind="ImageCheck" 
+                              Style="{StaticResource ExampleIconStyle}"
+                              Foreground="{StaticResource MutedTextBrush}"/>
+                                        <TextBlock Text="Ctrl + Alt + PrtScn" 
+                   Style="{StaticResource ExampleTextStyle}"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Visual example -->
+                        
+                    </StackPanel>
+                </Border>
+
+                <!-- Pro Tips Section -->
+                <Border Style="{StaticResource ProTipContainerStyle}">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <Icon:PackIconMaterial Kind="Lightbulb" 
+                                                  Style="{StaticResource ProTipIconStyle}"
+                                                  Foreground="{StaticResource AccentBrush}"/>
+                            <TextBlock Text="Note" 
+                                       Style="{StaticResource ProTipTitleStyle}"/>
+                        </StackPanel>
+
+                        <TextBlock Style="{StaticResource ProTipContentStyle}">
+                            • Use keyboard shortcuts for faster workflow<LineBreak/>
+                            • The app automatically detects content type and suggests appropriate file extensions<LineBreak/>
+                            • For now, the app save image as *.png and text as *.txt<LineBreak/>
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Border>
+</UserControl>

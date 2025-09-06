@@ -1,0 +1,48 @@
+﻿<Application x:Class="PasteToFile.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:PasteToFile"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:viewModel="clr-namespace:PasteToFile.MVVM.ViewModel"
+             xmlns:view="clr-namespace:PasteToFile.MVVM.View"
+             StartupUri="MainWindow.xaml"
+             xmlns:tb="http://www.hardcodet.net/taskbar"
+             xmlns:core="clr-namespace:PasteToFile.Core">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- 1. Custom themes -->
+                <ResourceDictionary Source="Theme/ClipboardTheme.xaml"/>
+                <ResourceDictionary Source="Theme/SidebarTheme.xaml"/>
+                <ResourceDictionary Source="Theme/MainTheme.xaml"/>
+
+                <!-- 2. Material Design Resources -->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Secondary/MaterialDesignColor.Lime.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- 3. BundledTheme with Key -->
+            <materialDesign:BundledTheme x:Key="MaterialDesignBundledTheme"
+                                      BaseTheme="Light"
+                                      PrimaryColor="DeepPurple"
+                                      SecondaryColor="Lime"/>
+            <tb:TaskbarIcon x:Key="MyTrayIcon"
+                IconSource="pack://application:,,,/Images/app.ico"
+                ToolTipText="MyApp is running..." 
+                TrayMouseDoubleClick="MyTrayIcon_TrayMouseDoubleClick"/>
+
+            <!-- 4. View-ViewModel mapping -->
+            <DataTemplate DataType="{x:Type viewModel:ClipboardViewModel}">
+                <view:ClipboardView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:SettingsViewModel}">
+                <view:SettingsView/>
+            </DataTemplate>
+            <core:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        </ResourceDictionary>
+        
+    </Application.Resources>
+    
+</Application>
