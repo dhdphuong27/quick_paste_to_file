@@ -28,6 +28,8 @@ namespace PasteToFile.Core
                         if (_instance == null)
                         {
                             _instance = LoadSettings();
+                            // Initialize startup setting AFTER the instance is loaded
+                            InitializeStartupSetting();
                         }
                     }
                 }
@@ -47,6 +49,7 @@ namespace PasteToFile.Core
                         PropertyNameCaseInsensitive = true,
                         WriteIndented = true
                     });
+                    // DON'T call InitializeStartupSetting() here - it causes circular dependency
                     return settings ?? new AppSettings();
                 }
             }
@@ -58,6 +61,19 @@ namespace PasteToFile.Core
             }
 
             return new AppSettings();
+        }
+
+        private static void InitializeStartupSetting()
+        {
+            // This method is now called AFTER _instance is set, so no circular dependency
+            var currentStartupStatus = StartupHelper.IsStartupEnabled();
+
+            if (_instance.StartWithWindows != currentStartupStatus)
+            {
+                // Update setting to match reality (useful for detecting external changes)
+                _instance.StartWithWindows = currentStartupStatus;
+                SaveSettings(_instance);
+            }
         }
 
         public static bool SaveSettings(AppSettings settings)
@@ -105,6 +121,15 @@ namespace PasteToFile.Core
         public static string GetSettingsFilePath()
         {
             return SettingsPath;
+        }
+
+        public static void ReloadInstance()
+        {
+            lock (_lock)
+            {
+                _instance = LoadSettings();
+                InitializeStartupSetting();
+            }
         }
     }
 }

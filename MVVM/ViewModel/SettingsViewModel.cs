@@ -132,7 +132,29 @@ namespace PasteToFile.MVVM.ViewModel
         private void ForceRefresh()
         {
             OnSettingsApplied?.Invoke();
+            SettingsManager.ReloadInstance();
+            _settings = SettingsManager.Instance;
+            OnPropertyChanged(string.Empty);
         }
+
+        private void ApplyStartupSettings()
+        {
+            if (SettingsManager.Instance.StartWithWindows)
+            {
+                if (!StartupHelper.EnableStartup())
+                {
+                    // Handle error - maybe show a notification
+                    System.Windows.MessageBox.Show("Failed to enable startup with Windows.",
+                        "Settings Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            else
+            {
+                StartupHelper.DisableStartup();
+            }
+        }
+
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)

@@ -10,14 +10,14 @@ namespace PasteToFile.Core
     public class AppSettings : INotifyPropertyChanged
     {
         // General Settings
-        private bool _startWithWindows = false;
+        private bool _startWithWindows = true;
         private bool _minimizeToTray = true;
         private bool _showNotifications = true;
-        private bool _autoSaveClipboard = true;
+        private bool _autoSaveClipboard = false;
 
         // File Management
         private bool _createDateFolders = false;
-        private bool _overwriteFiles = false;
+        private bool _overwriteFiles = true;
         private bool _includeFileExtension = true;
         private string _outputFolderPath = AppDomain.CurrentDomain.BaseDirectory;
 

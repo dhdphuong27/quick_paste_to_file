@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Runtime;
 using System.Windows;
 using System.Windows.Controls;
 using Hardcodet.Wpf.TaskbarNotification;
+using PasteToFile.Core;
 using PasteToFile.MVVM.Model;
 using PasteToFile.MVVM.View;
 
@@ -38,7 +40,10 @@ namespace PasteToFile.MVVM.ViewModel
             ClipboardVM = new ClipboardViewModel();
             HowToUseView = new HowToUseView();
             SettingsVM = new SettingsViewModel();
-            SettingsVM.OnSettingsApplied = () => ClipboardVM.OnLoadedAsync(null);
+            SettingsVM.OnSettingsApplied = () =>
+            {
+                ClipboardVM.ReloadData();
+            };
             CurrentView = ClipboardVM;
 
             ClipboardViewCommand = new RelayCommand(o =>
@@ -50,12 +55,15 @@ namespace PasteToFile.MVVM.ViewModel
             {
                 CurrentView = HowToUseView;
             });
+
             SettingsViewCommand = new RelayCommand(o =>
             {
                 CurrentView = SettingsVM;
             });
 
-            MinimizeCommand = new RelayCommand(MinimizeToTray);
+            Application.Current.MainWindow.StateChanged += MainWindow_StateChanged;
+
+            MinimizeCommand = new RelayCommand(MinimizeWindow);
             CloseCommand = new RelayCommand(CloseApp);
             InitializeTrayIcon();
         }
@@ -82,7 +90,23 @@ namespace PasteToFile.MVVM.ViewModel
         {
             Application.Current.MainWindow.Hide();
             // Show balloon tip (only on minimize, not on startup)
-            _trayIcon.ShowBalloonTip("MyApp", "App is running in background", BalloonIcon.Info);
+            //_trayIcon.ShowBalloonTip("MyApp", "App is running in background", BalloonIcon.Info);
+        }
+
+        private void MinimizeWindow()
+        {
+            Application.Current.MainWindow.WindowState = WindowState.Minimized;
+        }
+
+        private void MainWindow_StateChanged(object sender, EventArgs e)
+        {
+            var window = sender as Window;
+
+            // If MinimizeToTray is enabled and window is minimized, hide to tray
+            if (SettingsManager.Instance.MinimizeToTray && window.WindowState == WindowState.Minimized)
+            {
+                MinimizeToTray();
+            }
         }
 
         private void TrayIcon_DoubleClick(object sender, RoutedEventArgs e)
@@ -95,11 +119,19 @@ namespace PasteToFile.MVVM.ViewModel
             var mainWindow = Application.Current.MainWindow;
             if (mainWindow == null)
                 return;
+
             if (!mainWindow.IsVisible)
                 mainWindow.Show();
+
             if (mainWindow.WindowState == WindowState.Minimized)
                 mainWindow.WindowState = WindowState.Normal;
+
             mainWindow.Activate();
+
+            // Additional steps to ensure window comes to front
+            mainWindow.Topmost = true;
+            mainWindow.Topmost = false;
+            mainWindow.Focus();
         }
 
         private void CloseApp()

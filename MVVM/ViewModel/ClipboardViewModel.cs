@@ -22,7 +22,7 @@ namespace PasteToFile.MVVM.ViewModel
         public int _loadingCount;
         private bool _isLoaded;
 
-        private AppSettings settings = SettingsManager.Instance;
+        public AppSettings settings = SettingsManager.Instance;
 
         // --- properties bound to UI ---
         public PagedCollection<ClipboardContent> PagedData
@@ -245,8 +245,15 @@ namespace PasteToFile.MVVM.ViewModel
                 await EndLoadingAfterRender();
             }
         }
+        public void ReloadData()
+        {
+            SettingsManager.ReloadInstance();
+            settings = SettingsManager.Instance;
+            _isLoaded = false;
+            LoadedCommand.Execute(null);
+        }
 
-        private Task<List<ClipboardContent>> FetchDataAsync()
+        public Task<List<ClipboardContent>> FetchDataAsync()
         {
             return Task.Run(() =>
             {
