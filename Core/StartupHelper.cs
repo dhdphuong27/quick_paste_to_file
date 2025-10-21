@@ -15,12 +15,43 @@ namespace PasteToFile.Core
         /// </summary>
         private static string GetStartupCommand()
         {
-            string exePath = Assembly.GetExecutingAssembly().Location;
+            string exePath = null;
 
-            // For .NET Core/5+ apps, we need to handle the dll case
-            if (exePath.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
+            // For .NET 5+, use Environment.ProcessPath (most reliable)
+            exePath = Environment.ProcessPath;
+
+            // Fallback 1: Try Process.MainModule
+            if (string.IsNullOrEmpty(exePath))
             {
-                exePath = Path.ChangeExtension(exePath, ".exe");
+                try
+                {
+                    using (var process = System.Diagnostics.Process.GetCurrentProcess())
+                    {
+                        exePath = process.MainModule?.FileName;
+                    }
+                }
+                catch { }
+            }
+
+            // Fallback 2: If we got a DLL or null, construct the EXE path
+            if (string.IsNullOrEmpty(exePath) || exePath.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
+            {
+                // Get the base directory
+                string baseDir = AppContext.BaseDirectory;
+
+                // Get assembly name
+                string assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+
+                // Construct exe path
+                exePath = Path.Combine(baseDir, assemblyName + ".exe");
+            }
+
+            // Verify the file exists
+            if (!File.Exists(exePath))
+            {
+                string error = $"Executable not found at: {exePath}\nBase Directory: {AppContext.BaseDirectory}";
+                System.Diagnostics.Debug.WriteLine(error);
+                throw new FileNotFoundException(error);
             }
 
             // Add startup argument to minimize to tray on startup
@@ -34,11 +65,17 @@ namespace PasteToFile.Core
         {
             try
             {
+                string command = GetStartupCommand();
+
+                
                 using (RegistryKey key = Registry.CurrentUser.OpenSubKey(StartupKey, true))
                 {
                     if (key != null)
                     {
-                        key.SetValue(AppName, GetStartupCommand());
+                        key.SetValue(AppName, command);
+
+                        
+                        
                         return true;
                     }
                 }
@@ -46,6 +83,7 @@ namespace PasteToFile.Core
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Error enabling startup: {ex.Message}");
+                System.Windows.MessageBox.Show($"Error: {ex.Message}", "Error");
             }
             return false;
         }

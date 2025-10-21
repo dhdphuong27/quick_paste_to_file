@@ -28,7 +28,22 @@ namespace PasteToFile.MVVM.ViewModel
         public bool StartWithWindows
         {
             get => _settings.StartWithWindows;
-            set { _settings.StartWithWindows = value; OnPropertyChanged(); }
+            set
+            {
+                _settings.StartWithWindows = value;
+
+                // Apply registry change immediately
+                if (value)
+                {
+                    StartupHelper.EnableStartup();
+                }
+                else
+                {
+                    StartupHelper.DisableStartup();
+                }
+
+                OnPropertyChanged();
+            }
         }
 
         public bool MinimizeToTray
@@ -43,10 +58,11 @@ namespace PasteToFile.MVVM.ViewModel
             set { _settings.ShowNotifications = value; OnPropertyChanged(); }
         }
 
-        public bool AutoSaveClipboard
+
+        public bool SoundEffectWhenSaving
         {
-            get => _settings.AutoSaveClipboard;
-            set { _settings.AutoSaveClipboard = value; OnPropertyChanged(); }
+            get => _settings.SoundEffectWhenSaving;
+            set { _settings.SoundEffectWhenSaving = value; OnPropertyChanged(); }
         }
 
         public bool CreateDateFolders
@@ -106,10 +122,12 @@ namespace PasteToFile.MVVM.ViewModel
 
         private void SaveSettings()
         {
+            // Apply startup settings BEFORE saving
+
             if (SettingsManager.SaveSettings())
             {
-                MessageBox.Show("Settings saved successfully!", "Settings",
-                               MessageBoxButton.OK, MessageBoxImage.Information);
+                //MessageBox.Show("Settings saved successfully!", "Settings",
+                //               MessageBoxButton.OK, MessageBoxImage.Information);
                 ForceRefresh();
             }
         }
@@ -122,6 +140,7 @@ namespace PasteToFile.MVVM.ViewModel
             if (result == MessageBoxResult.Yes)
             {
                 SettingsManager.ResetToDefaults();
+
                 // Refresh all properties
                 OnPropertyChanged(string.Empty);
                 MessageBox.Show("Settings reset to defaults!", "Settings",
@@ -129,6 +148,7 @@ namespace PasteToFile.MVVM.ViewModel
                 ForceRefresh();
             }
         }
+
         private void ForceRefresh()
         {
             OnSettingsApplied?.Invoke();
@@ -137,30 +157,12 @@ namespace PasteToFile.MVVM.ViewModel
             OnPropertyChanged(string.Empty);
         }
 
-        private void ApplyStartupSettings()
-        {
-            if (SettingsManager.Instance.StartWithWindows)
-            {
-                if (!StartupHelper.EnableStartup())
-                {
-                    // Handle error - maybe show a notification
-                    System.Windows.MessageBox.Show("Failed to enable startup with Windows.",
-                        "Settings Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-            }
-            else
-            {
-                StartupHelper.DisableStartup();
-            }
-        }
-
-
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
         {
+            SettingsManager.SaveSettings();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
-

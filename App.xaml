@@ -30,7 +30,7 @@
                                       SecondaryColor="Lime"/>
             <tb:TaskbarIcon x:Key="MyTrayIcon"
                 IconSource="pack://application:,,,/Images/app.ico"
-                ToolTipText="MyApp is running..." 
+                ToolTipText="Paste to file is running..." 
                 TrayMouseDoubleClick="MyTrayIcon_TrayMouseDoubleClick"/>
 
             <!-- 4. View-ViewModel mapping -->

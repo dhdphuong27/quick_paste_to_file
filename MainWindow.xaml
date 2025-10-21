@@ -11,6 +11,7 @@
         mc:Ignorable="d"
         Height="640" Width="960"
         WindowStyle="None"
+        Icon="/Images/app.ico"
         ResizeMode="NoResize"
         Background="Transparent"
         AllowsTransparency="True"

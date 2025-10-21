@@ -140,6 +140,14 @@ namespace PasteToFile.MVVM.ViewModel
 
                     // refresh paging (keeps you on the current page if possible)
                     Paging(preserveCurrentPage: true);
+                    if (SettingsManager.Instance.SoundEffectWhenSaving)
+                    {
+                        SoundEffectPlayer.PlayCustomSoundFromFile();
+                    }
+                    if (SettingsManager.Instance.ShowNotifications)
+                    {
+                        NotificationManager.ShowFileSaved(content.ID, settings.OutputFolderPath);
+                    }
                 }
                 finally
                 {
@@ -196,6 +204,14 @@ namespace PasteToFile.MVVM.ViewModel
                     content.SaveToFile();
                     contents.Insert(0, content);
                     Paging(preserveCurrentPage: true);
+                    if (SettingsManager.Instance.SoundEffectWhenSaving)
+                    {
+                        SoundEffectPlayer.PlayCustomSoundFromFile();
+                    }
+                    if (SettingsManager.Instance.ShowNotifications)
+                    {
+                        NotificationManager.ShowFileSaved(content.ID, settings.OutputFolderPath);
+                    }
                 }
                 else
                 {

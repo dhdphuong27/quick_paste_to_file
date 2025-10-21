@@ -10,10 +10,10 @@ namespace PasteToFile.Core
     public class AppSettings : INotifyPropertyChanged
     {
         // General Settings
-        private bool _startWithWindows = true;
+        private bool _startWithWindows = false;
         private bool _minimizeToTray = true;
-        private bool _showNotifications = true;
-        private bool _autoSaveClipboard = false;
+        private bool _showNotifications = false;
+        private bool _soundEffectWhenSaving = true;
 
         // File Management
         private bool _createDateFolders = false;
@@ -43,10 +43,10 @@ namespace PasteToFile.Core
             set { _showNotifications = value; OnPropertyChanged(); }
         }
 
-        public bool AutoSaveClipboard
+        public bool SoundEffectWhenSaving
         {
-            get => _autoSaveClipboard;
-            set { _autoSaveClipboard = value; OnPropertyChanged(); }
+            get => _soundEffectWhenSaving;
+            set { _soundEffectWhenSaving = value; OnPropertyChanged(); }
         }
 
         public bool CreateDateFolders

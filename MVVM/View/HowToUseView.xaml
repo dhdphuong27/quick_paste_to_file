@@ -55,7 +55,7 @@
                             <StackPanel>
                                 <TextBlock Text="Save folder" Style="{StaticResource TipTitleStyle}"/>
                                 <TextBlock Style="{StaticResource TipDescriptionStyle}" Width="644">
-                                    By default, files are saved to the "ClipboardHistory" folder in the same directory.
+                                    By default, files are saved to the "ClipboardHistory" folder in the same directory. You can change this in Settings.
                                 </TextBlock>
                             </StackPanel>
                         </StackPanel>
@@ -127,9 +127,9 @@
                         </StackPanel>
 
                         <TextBlock Style="{StaticResource ProTipContentStyle}">
-                            • Use keyboard shortcuts for faster workflow<LineBreak/>
                             • The app automatically detects content type and suggests appropriate file extensions<LineBreak/>
                             • For now, the app save image as *.png and text as *.txt<LineBreak/>
+                            • You can also turn off the sound effect and notification
                         </TextBlock>
                     </StackPanel>
                 </Border>

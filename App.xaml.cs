@@ -38,17 +38,25 @@ namespace PasteToFile
 
             bool startedFromWindowsStartup = e.Args.Contains("--startup");
 
+            // Create main window
+            MainWindow = new MainWindow();
+
             // If started from Windows startup and MinimizeToTray is enabled, start minimized
-            if (startedFromWindowsStartup && SettingsManager.Instance.MinimizeToTray)
+            if (startedFromWindowsStartup)
             {
-                // Create main window but don't show it
-                MainWindow = new MainWindow();
-                // The MainViewModel should handle the tray initialization
-                // No need to call Show() on the window
+                // IMPORTANT: Show the window first to initialize it and create the window handle
+                // This ensures hotkeys can be registered properly
+                MainWindow.Show();
+
+                // Then immediately hide it (or minimize to tray)
+                MainWindow.Hide();
+
+                // Alternative: If you want to minimize instead of hiding
+                // MainWindow.WindowState = WindowState.Minimized;
+                // MainWindow.Hide();
             }
             else
             {
-                MainWindow = new MainWindow();
                 MainWindow.Show();
             }
 

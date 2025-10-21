@@ -10,10 +10,24 @@
 	  <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<PublishSingleFile>true</PublishSingleFile>
+		<SatelliteResourceLanguages></SatelliteResourceLanguages>
+		<SelfContained>true</SelfContained>
+	</PropertyGroup>
+
   <ItemGroup>
+    <None Remove="chime-sound.wav" />
     <None Remove="Images\app.ico" />
     <None Remove="Images\default_pfp.jpg" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="save_sound.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Hardcodet.Wpf.TaskbarNotification" Version="1.0.5" />
@@ -24,7 +38,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="chime-sound.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Images\app.ico" />
+    <Resource Include="Images\app1.ico" />
     <Resource Include="Images\default_pfp.jpg" />
   </ItemGroup>
 

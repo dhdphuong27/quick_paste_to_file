@@ -72,6 +72,9 @@ namespace PasteToFile.MVVM.ViewModel
         {
             _trayIcon = (TaskbarIcon)Application.Current.FindResource("MyTrayIcon");
 
+            // Initialize notification manager with the tray icon
+            NotificationManager.Initialize(_trayIcon);
+
             // Double click restores window
             _trayIcon.TrayMouseDoubleClick -= TrayIcon_DoubleClick;
             _trayIcon.TrayMouseDoubleClick += TrayIcon_DoubleClick;
@@ -81,7 +84,11 @@ namespace PasteToFile.MVVM.ViewModel
             var showMenuItem = new MenuItem { Header = "Show" };
             showMenuItem.Click += (s, e) => RestoreFromTray();
             var exitMenuItem = new MenuItem { Header = "Exit" };
-            exitMenuItem.Click += (s, e) => CloseApp();
+            exitMenuItem.Click += (s, e) => {
+                if (_trayIcon != null)
+                    _trayIcon.Dispose();
+                Application.Current.Shutdown();
+            };
             _trayIcon.ContextMenu.Items.Add(showMenuItem);
             _trayIcon.ContextMenu.Items.Add(exitMenuItem);
         }
@@ -136,6 +143,11 @@ namespace PasteToFile.MVVM.ViewModel
 
         private void CloseApp()
         {
+            if (SettingsManager.Instance.MinimizeToTray)
+            {
+                MinimizeToTray();
+                return;
+            }
             if (_trayIcon != null)
                 _trayIcon.Dispose();
             Application.Current.Shutdown();

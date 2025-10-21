@@ -29,7 +29,7 @@
     <Grid Background="{StaticResource BackgroundBrush}">
         <ScrollViewer VerticalScrollBarVisibility="Auto" 
                       HorizontalScrollBarVisibility="Disabled"
-                      Margin="20">
+                      Margin="0,0,20,20">
             <StackPanel MaxWidth="600">
 
                 <!-- Header -->
@@ -57,7 +57,7 @@
                                   Style="{StaticResource ModernCheckBox}"
                                   IsChecked="{Binding StartWithWindows, Mode=TwoWay}"/>
 
-                        <CheckBox Content="Minimize to system tray" 
+                        <CheckBox Content="Minimize to system tray when close" 
                                   Style="{StaticResource ModernCheckBox}"
                                   IsChecked="{Binding MinimizeToTray, Mode=TwoWay}"/>
 
@@ -65,39 +65,13 @@
                                   Style="{StaticResource ModernCheckBox}"
                                   IsChecked="{Binding ShowNotifications, Mode=TwoWay}"/>
 
-                        <CheckBox Content="Auto-save clipboard content" 
+                        <CheckBox Content="Sound effect when saving" 
                                   Style="{StaticResource ModernCheckBox}"
-                                  IsChecked="{Binding AutoSaveClipboard, Mode=TwoWay}"/>
+                                  IsChecked="{Binding SoundEffectWhenSaving, Mode=TwoWay}"/>
                     </StackPanel>
                 </Border>
 
-                <!-- File Management Section -->
-                <Border Background="{StaticResource CardBackgroundBrush}" 
-                        BorderBrush="{StaticResource BorderBrush}" 
-                        BorderThickness="1" 
-                        CornerRadius="8" 
-                        Padding="24" 
-                        Margin="0,0,0,20">
-                    <StackPanel>
-                        <TextBlock Text="File Management" 
-                                   FontSize="20" 
-                                   FontWeight="SemiBold" 
-                                   Foreground="{StaticResource PrimaryTextBrush}" 
-                                   Margin="0,0,0,16"/>
-
-                        <CheckBox Content="Create subfolders by date" 
-                                  Style="{StaticResource ModernCheckBox}"
-                                  IsChecked="{Binding CreateDateFolders, Mode=TwoWay}"/>
-
-                        <CheckBox Content="Overwrite existing files" 
-                                  Style="{StaticResource ModernCheckBox}"
-                                  IsChecked="{Binding OverwriteFiles, Mode=TwoWay}"/>
-
-                        <CheckBox Content="Include file extension in filename" 
-                                  Style="{StaticResource ModernCheckBox}"
-                                  IsChecked="{Binding IncludeFileExtension, Mode=TwoWay}"/>
-                    </StackPanel>
-                </Border>
+                
 
                 <!-- Output Folder Section -->
                 <Border Background="{StaticResource CardBackgroundBrush}" 
@@ -150,43 +124,16 @@
                     </StackPanel>
                 </Border>
 
-                <!-- Advanced Settings Section -->
-                <Border Background="{StaticResource CardBackgroundBrush}" 
-                        BorderBrush="{StaticResource BorderBrush}" 
-                        BorderThickness="1" 
-                        CornerRadius="8" 
-                        Padding="24" 
-                        Margin="0,0,0,20">
-                    <StackPanel>
-                        <TextBlock Text="Advanced" 
-                                   FontSize="20" 
-                                   FontWeight="SemiBold" 
-                                   Foreground="{StaticResource PrimaryTextBrush}" 
-                                   Margin="0,0,0,16"/>
-
-                        <CheckBox Content="Enable debug logging" 
-                                  Style="{StaticResource ModernCheckBox}"
-                                  IsChecked="{Binding EnableDebugLogging, Mode=TwoWay}"/>
-
-                        <CheckBox Content="Check for updates automatically" 
-                                  Style="{StaticResource ModernCheckBox}"
-                                  IsChecked="{Binding AutoCheckUpdates, Mode=TwoWay}"/>
-                    </StackPanel>
-                </Border>
+                
 
                 <!-- Action Buttons -->
                 <StackPanel Orientation="Horizontal" 
                             HorizontalAlignment="Right" 
-                            Margin="0,20,0,0">
+                            Margin="0,5,0,0">
                     <Button Content="Reset to Defaults" 
                             Style="{StaticResource ModernButton}" 
                             Command="{Binding ResetSettingsCommand}"
                             Margin="0,0,12,0"/>
-
-                    <Button Content="Save Settings" 
-                            Style="{StaticResource ModernButton}" 
-                            Command="{Binding SaveSettingsCommand}"
-                            Background="{StaticResource AccentBrush}"/>
                 </StackPanel>
 
             </StackPanel>
