@@ -261,12 +261,35 @@ namespace PasteToFile.MVVM.ViewModel
                 await EndLoadingAfterRender();
             }
         }
+
         public void ReloadData()
         {
-            SettingsManager.ReloadInstance();
-            settings = SettingsManager.Instance;
-            _isLoaded = false;
-            LoadedCommand.Execute(null);
+            BeginLoading();
+            try
+            {
+                SettingsManager.ReloadInstance();
+                settings = SettingsManager.Instance;
+
+                // Reload data synchronously or async
+                _isLoaded = false;
+
+                // Option 1: Direct async call
+                _ = Task.Run(async () =>
+                {
+                    await Application.Current.Dispatcher.InvokeAsync(async () =>
+                    {
+                        await OnLoadedAsync(null);
+                    });
+                });
+
+                // OR Option 2: Simpler - just reload without the guard
+                contents = FetchDataAsync().Result;
+                Paging(preserveCurrentPage: true);
+            }
+            finally
+            {
+                EndLoading();
+            }
         }
 
         public Task<List<ClipboardContent>> FetchDataAsync()

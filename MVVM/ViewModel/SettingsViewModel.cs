@@ -86,7 +86,7 @@ namespace PasteToFile.MVVM.ViewModel
         public string OutputFolderPath
         {
             get => _settings.OutputFolderPath;
-            set { _settings.OutputFolderPath = value; OnPropertyChanged(); }
+            set { _settings.OutputFolderPath = value; OnPropertyChanged(); ForceRefresh(); }
         }
 
         public bool EnableDebugLogging
